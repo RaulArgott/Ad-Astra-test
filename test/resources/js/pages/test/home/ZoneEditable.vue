@@ -1,5 +1,5 @@
 <template>
-  <div class="zone-editable">
+  <div class="zone-editable" :class="isMoreThenFive">
     <div v-if="display" class="zone-display">
       <div>
         Zone Name: <strong>{{ name }}</strong> Distributions: {{ distributionDisplay }}
@@ -60,6 +60,9 @@ export default {
   computed: {
     distributionDisplay() {
       return this.distributions.map(distribution => '%' + distribution.percentage).join('-');
+    },
+    isMoreThenFive() {
+      return this.distributions.length >= 5 && this.display? 'five-or-more' : '';
     }
   },
   mounted() {
@@ -131,6 +134,11 @@ export default {
       grid-template-columns: repeat(1, 1fr);
       gap: $small-action-space;
     }
+
   }
+}
+
+.five-or-more {
+  background-color: aqua;
 }
 </style>
