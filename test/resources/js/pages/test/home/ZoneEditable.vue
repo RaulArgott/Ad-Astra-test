@@ -62,7 +62,7 @@ export default {
       return this.distributions.map(distribution => '%' + distribution.percentage).join('-');
     },
     isMoreThenFive() {
-      return this.distributions.length >= 5 && this.display? 'five-or-more' : '';
+      return this.distributions.length >= 5 && this.display ? 'five-or-more' : '';
     }
   },
   mounted() {
@@ -93,10 +93,11 @@ export default {
         name: this.form.name,
       };
 
+      this.$emit('initLoading');
       await axios.post('/api/zones/edit', params);
 
       this.$emit('edit', { name: params.name });
-
+      this.$emit('hideLoading');
       this.saving = false;
       this.display = true;
     }

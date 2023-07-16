@@ -5,15 +5,9 @@
     </h1>
 
     <div class="col-lg-6 mx-auto zones mb">
-      <zone-editable
-        v-for="zone in zones"
-        :id="zone.id"
-        :name="zone.name"
-        :distributions="zone.distributions"
-        :key="zone.uid"
-        @edit="zone.name = $event.name"
-        class="zone"
-      />
+      <zone-editable v-for="zone in zones" :id="zone.id" :name="zone.name" :distributions="zone.distributions"
+        :key="zone.uid" @edit="zone.name = $event.name" @initLoading="showLoading()" @hideLoading="hideLoading()"
+        class="zone" />
     </div>
 
     <h1 class="display-5 fw-bold text-center">
@@ -36,18 +30,21 @@
       <li>Create a new field "updated_at" that is going to store the date when the name field change</li>
       <li>Show the updated_at field value near each zone name</li>
       <li>Add a way for the user to know that an element is being saved</li>
-      <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is not being edited</li>
+      <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is
+        not being edited</li>
     </ul>
+    <loading-component v-if="loading"></loading-component>
   </div>
 </template>
 
 <script>
 import ZoneEditable from './ZoneEditable.vue';
-
+import LoadingComponent from '../../../components/Loading.vue';
 export default {
   name: 'HomePage',
   components: {
-    ZoneEditable
+    ZoneEditable,
+    LoadingComponent
   },
   props: {
     context: {
@@ -57,7 +54,8 @@ export default {
   data() {
     return {
       zones: [],
-      zoneUid: 0
+      zoneUid: 0,
+      loading: false,
     };
   },
   mounted() {
@@ -69,6 +67,15 @@ export default {
         distributions: data.distributions
       };
     });
+  },
+  methods: {
+    showLoading() {
+      this.loading = true;
+    },
+    hideLoading() {
+      this.loading = false;
+      this.$toastr.s('Guardado');
+    }
   }
 }
 </script>
