@@ -6,7 +6,7 @@
 
     <div class="col-lg-6 mx-auto zones mb">
       <zone-editable v-for="zone in zones" :id="zone.id" :name="zone.name" :distributions="zone.distributions"
-        :key="zone.uid" @edit="zone.name = $event.name" @initLoading="showLoading()" @hideLoading="hideLoading()"
+        :key="zone.uid" @edit="save($event, zone)" @initLoading="showLoading()" @hideLoading="hideLoading()"
         class="zone" />
     </div>
 
@@ -59,6 +59,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.context);
     this.zones = this.context.zones.map(data => {
       return {
         id: data.id,
@@ -69,6 +70,10 @@ export default {
     });
   },
   methods: {
+    save($event, zone) {
+      zone.name = $event.name
+      zone.distributions = $event.distributions
+    },
     showLoading() {
       this.loading = true;
     },

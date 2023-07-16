@@ -27,6 +27,10 @@
       </div>
 
       <div class="zone-edit-actions">
+        <button class="btn btn-outline-primary" @click="">
+          Add distribution
+        </button>
+
         <button class="btn btn-secondary" :disabled="saving" @click="setDisplay(true)">
           Cancel
         </button>
@@ -91,16 +95,17 @@ export default {
       const params = {
         id: this.id,
         name: this.form.name,
+        distributions: this.form.distributions
       };
 
       this.$emit('initLoading');
       await axios.post('/api/zones/edit', params);
 
-      this.$emit('edit', { name: params.name });
+      this.$emit('edit', { name: params.name, distributions: params.distributions });
       this.$emit('hideLoading');
       this.saving = false;
       this.display = true;
-    }
+    },
   }
 }
 </script>
