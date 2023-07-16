@@ -24,9 +24,9 @@
       <li>The sum of all distributions must be ensured to be 100% in anyway DONE</li>
       <li>The distributions must be integer DONE</li>
       <li>The zone name cannot be empty DONE</li>
-      <li>The zone name cannot have more than one space between each word</li>
-      <li>The zone name cannot have spaces at start or the end</li>
-      <li>The zone name cannot be repeated in any way</li>
+      <li>The zone name cannot have more than one space between each word DONE</li>
+      <li>The zone name cannot have spaces at start or the end DONE</li>
+      <li>The zone name cannot be repeated in any way DONE</li>
       <li>Create a new field "updated_at" that is going to store the date when the name field change</li>
       <li>Show the updated_at field value near each zone name</li>
       <li>Add a way for the user to know that an element is being saved DONE</li>
@@ -78,7 +78,6 @@ export default {
     },
     hideLoading() {
       this.loading = false;
-      this.$toastr.s('Guardado');
     }
   }
 }

@@ -27,6 +27,12 @@ def edit(request):
     if sum_percentages != 100:
         return Response("Sum of distributions must be 100", status=status.HTTP_400_BAD_REQUEST)
         
+    repeated_zone = Zone.objects.filter(name__iexact = name).exclude(pk=zone_id).first()
+    print(repeated_zone)
+    if repeated_zone is not None:
+        return Response("Zone name must be unique", status=status.HTTP_400_BAD_REQUEST)
+    
+        
     """ Bulk delete distributions """
     distribution_bulk_delete = Distribution.objects.filter(id__in=distributions_to_delete)
     if distribution_bulk_delete:
@@ -46,7 +52,7 @@ def edit(request):
     if not zone:
         return Response('', status=status.HTTP_400_BAD_REQUEST)
 
-    zone.name = name
+    zone.name =  name.strip()
     zone.save()
 
     """ Return distributions """

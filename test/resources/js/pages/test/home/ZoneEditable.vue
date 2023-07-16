@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     getValuesFromProps() {
+      console.log(this.distributions);
       this.form.name = this.name;
       this.form.distributions = this.distributions.map(distribution => {
         return {
@@ -97,26 +98,32 @@ export default {
         this.getValuesFromProps();
       }
     },
-    async save() {
+    save() {
       if (this.validate()) {
         this.saving = true;
         /* Creating object for api consumption */
         const params = {
           id: this.id,
-          name: this.form.name,
+          name: this.form.name.trimEnd().trimStart(),
           distributions: this.form.distributions,
           distributions_delete: this.distributions_to_delete,
         };
         /* Emit loading events while api consumption */
         this.$emit('initLoading');
-        const edited_distributions = await axios.post('/api/zones/edit', params);
-        this.$emit('edit', { name: params.name, distributions: edited_distributions.data });
-        this.$emit('hideLoading');
-
-        /* Displaying aux variables */
-        this.saving = false;
-        this.display = true;
-
+        axios.post('/api/zones/edit', params)
+          .then((res) => {
+            this.getValuesFromProps();
+            let edited_distributions = res.data;
+            this.$emit('edit', { name: params.name, distributions: edited_distributions });
+            this.display = true;
+            console.log(this.display);
+            this.$toastr.s('Guardado');
+          }).catch((err) => {
+            this.$toastr.e(err.response.data);
+          }).finally(() => {
+            this.saving = false;
+            this.$emit('hideLoading');
+          });
       }
     },
     addDistribution() {
@@ -133,13 +140,15 @@ export default {
       let errs = []
       if (this.form.name.length < 1)
         errs.push('Name is required');
+      if (this.form.name.includes('  '))
+        errs.push('Name must not contain two spaces');
       if (this.form.distributions.length < 1)
         errs.push('At least 1 distribution is required');
       if (this.form.distributions.map(x => parseInt(x.percentage)).reduce((a, b) => a + b) != 100)
         errs.push('Sum of distributions must be 100');
 
       (this.form.distributions).forEach(dis => {
-        if(!Number.isInteger(dis.percentage))
+        if (!Number.isInteger(dis.percentage))
           errs.push(dis.percentage + ' is not an integer');
       });
       (errs).forEach(element => {
