@@ -18,8 +18,8 @@
       <li>Add the percentage symbol to each distribution number while is not being edited DONE</li>
       <li>The cancel button is not working DONE</li>
       <li>Without refreshing the page, be able to edit all the distributions from a zone DONE</li>
-      <li>Be able to add more distributions</li>
-      <li>Be able to remove distributions</li>
+      <li>Be able to add more distributions DONE</li>
+      <li>Be able to remove distributions DONE</li>
       <li>When the user is not able to save due to some error, the error must be showed</li>
       <li>The sum of all distributions must be ensured to be 100% in anyway</li>
       <li>The distributions must be integer</li>
