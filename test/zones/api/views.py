@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from zones.models import Zone
 from zones.models import Distribution
+from zones.api.serializers import DistributionSerializer
 
 @api_view(['POST'])
 def edit(request):
@@ -11,7 +12,6 @@ def edit(request):
     name = request.data.get('name')
     distributions = request.data.get('distributions')
     for item in distributions:
-        print(item)
         distribution = Distribution.objects.filter(pk=item['id']).first()
         if distribution:
             distribution.percentage = item['percentage']
@@ -26,4 +26,5 @@ def edit(request):
     zone.name = name
     zone.save()
 
-    return Response()
+    distributions_data = DistributionSerializer(Distribution.objects.filter(zone_id = zone_id), many=True).data
+    return Response(distributions_data)

@@ -15,9 +15,9 @@
     </h1>
 
     <ul class="col-lg-6 mx-auto">
-      <li>Add the percentage symbol to each distribution number while is not being edited</li>
-      <li>The cancel button is not working</li>
-      <li>Without refreshing the page, be able to edit all the distributions from a zone</li>
+      <li>Add the percentage symbol to each distribution number while is not being edited DONE</li>
+      <li>The cancel button is not working DONE</li>
+      <li>Without refreshing the page, be able to edit all the distributions from a zone DONE</li>
       <li>Be able to add more distributions</li>
       <li>Be able to remove distributions</li>
       <li>When the user is not able to save due to some error, the error must be showed</li>
@@ -29,9 +29,9 @@
       <li>The zone name cannot be repeated in any way</li>
       <li>Create a new field "updated_at" that is going to store the date when the name field change</li>
       <li>Show the updated_at field value near each zone name</li>
-      <li>Add a way for the user to know that an element is being saved</li>
+      <li>Add a way for the user to know that an element is being saved DONE</li>
       <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is
-        not being edited</li>
+        not being edited DONE</li>
     </ul>
     <loading-component v-if="loading"></loading-component>
   </div>
@@ -59,7 +59,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.context);
     this.zones = this.context.zones.map(data => {
       return {
         id: data.id,

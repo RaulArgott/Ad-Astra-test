@@ -27,7 +27,7 @@
       </div>
 
       <div class="zone-edit-actions">
-        <button class="btn btn-outline-primary" @click="">
+        <button class="btn btn-outline-primary" @click="addDistribution()">
           Add distribution
         </button>
 
@@ -99,12 +99,17 @@ export default {
       };
 
       this.$emit('initLoading');
-      await axios.post('/api/zones/edit', params);
-
-      this.$emit('edit', { name: params.name, distributions: params.distributions });
+      const edited_distributions = await axios.post('/api/zones/edit', params);
+      this.$emit('edit', { name: params.name, distributions: edited_distributions.data });
       this.$emit('hideLoading');
       this.saving = false;
       this.display = true;
+    },
+    addDistribution(){
+      this.form.distributions.push({
+        id: -1,
+        percentage: null
+      });
     },
   }
 }
