@@ -20,10 +20,10 @@
       <li>Without refreshing the page, be able to edit all the distributions from a zone DONE</li>
       <li>Be able to add more distributions DONE</li>
       <li>Be able to remove distributions DONE</li>
-      <li>When the user is not able to save due to some error, the error must be showed</li>
-      <li>The sum of all distributions must be ensured to be 100% in anyway</li>
-      <li>The distributions must be integer</li>
-      <li>The zone name cannot be empty</li>
+      <li>When the user is not able to save due to some error, the error must be showed DONE</li>
+      <li>The sum of all distributions must be ensured to be 100% in anyway DONE</li>
+      <li>The distributions must be integer </li>
+      <li>The zone name cannot be empty DONE</li>
       <li>The zone name cannot have more than one space between each word</li>
       <li>The zone name cannot have spaces at start or the end</li>
       <li>The zone name cannot be repeated in any way</li>

@@ -22,7 +22,8 @@
             Distribution
           </label>
           <div class="input-group">
-            <input v-model="distribution.percentage" placeholder="Percentage" class="form-control">
+            <input v-model="distribution.percentage" placeholder="Percentage" class="form-control" type="number" min="0"
+              max="100">
             <button class="btn btn-danger" @click="removeDistribution(index)">
               <i class="fa-solid fa-trash-can"></i>
             </button>
@@ -97,23 +98,26 @@ export default {
       }
     },
     async save() {
-      this.saving = true;
-      /* Creating object for api consumption */
-      const params = {
-        id: this.id,
-        name: this.form.name,
-        distributions: this.form.distributions,
-        distributions_delete: this.distributions_to_delete,
-      };
-      /* Emit loading events while api consumption */
-      this.$emit('initLoading');
-      const edited_distributions = await axios.post('/api/zones/edit', params);
-      this.$emit('edit', { name: params.name, distributions: edited_distributions.data });
-      this.$emit('hideLoading');
+      if (this.validate()) {
+        this.saving = true;
+        /* Creating object for api consumption */
+        const params = {
+          id: this.id,
+          name: this.form.name,
+          distributions: this.form.distributions,
+          distributions_delete: this.distributions_to_delete,
+        };
+        /* Emit loading events while api consumption */
+        this.$emit('initLoading');
+        const edited_distributions = await axios.post('/api/zones/edit', params);
+        this.$emit('edit', { name: params.name, distributions: edited_distributions.data });
+        this.$emit('hideLoading');
 
-      /* Displaying aux variables */
-      this.saving = false;
-      this.display = true;
+        /* Displaying aux variables */
+        this.saving = false;
+        this.display = true;
+
+      }
     },
     addDistribution() {
       this.form.distributions.push({
@@ -123,7 +127,24 @@ export default {
     },
     removeDistribution(index) {
       this.distributions_to_delete.push(this.form.distributions.splice(index, 1)[0].id);
+    },
+    validate() {
+      /* Validate */
+      let errs = []
+      if (this.form.name.length < 1)
+        errs.push('Name is required');
+      if (this.form.distributions.length < 1)
+        errs.push('At least 1 distribution is required');
+      if (this.form.distributions.map(x => parseInt(x.percentage)).reduce((a, b) => a + b) != 100)
+        errs.push('Sum of distributions must be 100');
+      (errs).forEach(element => {
+        this.$toastr.e(element);
+      });
+      if (errs.length > 0)
+        return false;
+      return true;
     }
+
   }
 }
 </script>
