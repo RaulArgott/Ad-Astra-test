@@ -23,7 +23,7 @@
           </label>
           <div class="input-group">
             <input v-model="distribution.percentage" placeholder="Percentage" class="form-control" type="number" min="0"
-              max="100">
+              max="100" step="1">
             <button class="btn btn-danger" @click="removeDistribution(index)">
               <i class="fa-solid fa-trash-can"></i>
             </button>
@@ -137,6 +137,11 @@ export default {
         errs.push('At least 1 distribution is required');
       if (this.form.distributions.map(x => parseInt(x.percentage)).reduce((a, b) => a + b) != 100)
         errs.push('Sum of distributions must be 100');
+
+      (this.form.distributions).forEach(dis => {
+        if(!Number.isInteger(dis.percentage))
+          errs.push(dis.percentage + ' is not an integer');
+      });
       (errs).forEach(element => {
         this.$toastr.e(element);
       });
