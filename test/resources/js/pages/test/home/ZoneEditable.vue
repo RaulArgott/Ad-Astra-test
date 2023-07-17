@@ -89,6 +89,7 @@ export default {
           percentage: distribution.percentage
         };
       });
+      /* Reset to delete elements */
       this.distributions_to_delete = [];
     },
     setDisplay(value) {
@@ -133,6 +134,7 @@ export default {
       });
     },
     removeDistribution(index) {
+      /* Remove from array and add to "To delete" elements */
       this.distributions_to_delete.push(this.form.distributions.splice(index, 1)[0].id);
     },
     isInt(n) {
@@ -147,13 +149,18 @@ export default {
         errs.push('Name must not contain two spaces');
       if (this.form.distributions.length < 1)
         errs.push('At least 1 distribution is required');
-      if (this.form.distributions.map(x => parseFloat(x.percentage)).reduce((a, b) => a + b) != 100)
-        errs.push('Sum of distributions must be 100');
+
 
       (this.form.distributions).forEach(dis => {
+        if (!dis.percentage)
+          dis.percentage = 0;
         if (!this.isInt(dis.percentage))
           errs.push(dis.percentage + ' is not an integer');
       });
+
+      if (this.form.distributions.map(x => parseFloat(x.percentage)).reduce((a, b) => a + b) != 100)
+        errs.push('Sum of distributions must be 100');
+
       (errs).forEach(element => {
         this.$toastr.e(element);
       });
