@@ -5,9 +5,9 @@
     </h1>
 
     <div class="col-lg-6 mx-auto zones mb">
-      <zone-editable v-for="zone in zones" :id="zone.id" :name="zone.name" :distributions="zone.distributions"
-        :key="zone.uid" @edit="save($event, zone)" @initLoading="showLoading()" @hideLoading="hideLoading()"
-        class="zone" />
+      <zone-editable v-for="zone in zones" :id="zone.id" :name="zone.name" :updated_at="zone.updated_at"
+        :distributions="zone.distributions" :key="zone.uid" @edit="save($event, zone)" @initLoading="showLoading()"
+        @hideLoading="hideLoading()" class="zone" />
     </div>
 
     <h1 class="display-5 fw-bold text-center">
@@ -27,8 +27,8 @@
       <li>The zone name cannot have more than one space between each word DONE</li>
       <li>The zone name cannot have spaces at start or the end DONE</li>
       <li>The zone name cannot be repeated in any way DONE</li>
-      <li>Create a new field "updated_at" that is going to store the date when the name field change</li>
-      <li>Show the updated_at field value near each zone name</li>
+      <li>Create a new field "updated_at" that is going to store the date when the name field change DONE</li>
+      <li>Show the updated_at field value near each zone name DONE</li>
       <li>Add a way for the user to know that an element is being saved DONE</li>
       <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is
         not being edited DONE</li>
@@ -64,14 +64,16 @@ export default {
         id: data.id,
         name: data.name,
         uid: this.zoneUid++,
+        updated_at: data.updated_at,
         distributions: data.distributions
       };
     });
   },
   methods: {
     save($event, zone) {
-      zone.name = $event.name
-      zone.distributions = $event.distributions
+      zone.name = $event.name;
+      zone.distributions = $event.distributions;
+      zone.updated_at = $event.updated_at;
     },
     showLoading() {
       this.loading = true;

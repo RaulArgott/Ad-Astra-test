@@ -2,7 +2,8 @@
   <div class="zone-editable" :class="isMoreThenFive">
     <div v-if="display" class="zone-display">
       <div>
-        Zone Name: <strong>{{ name }}</strong> Distributions: {{ distributionDisplay }}
+        Zone Name: <strong>{{ name }}</strong> <span>({{ updated_at | formatDate }})</span> Distributions: {{
+          distributionDisplay }}
       </div>
 
       <button class="btn btn-primary" @click="setDisplay(false)" :disabled="saving">
@@ -55,6 +56,7 @@ export default {
     name: String,
     id: Number,
     distributions: Array,
+    updated_at: String,
   },
   data() {
     return {
@@ -80,7 +82,6 @@ export default {
   },
   methods: {
     getValuesFromProps() {
-      console.log(this.distributions);
       this.form.name = this.name;
       this.form.distributions = this.distributions.map(distribution => {
         return {
@@ -112,11 +113,10 @@ export default {
         this.$emit('initLoading');
         axios.post('/api/zones/edit', params)
           .then((res) => {
+            let zoneRes = res.data[0];
             this.getValuesFromProps();
-            let edited_distributions = res.data;
-            this.$emit('edit', { name: params.name, distributions: edited_distributions });
+            this.$emit('edit', { name: params.name, distributions: zoneRes.distributions, updated_at: zoneRes.updated_at });
             this.display = true;
-            console.log(this.display);
             this.$toastr.s('Guardado');
           }).catch((err) => {
             this.$toastr.e(err.response.data);
@@ -135,6 +135,9 @@ export default {
     removeDistribution(index) {
       this.distributions_to_delete.push(this.form.distributions.splice(index, 1)[0].id);
     },
+    isInt(n) {
+      return n % 1 === 0;
+    },
     validate() {
       /* Validate */
       let errs = []
@@ -144,11 +147,11 @@ export default {
         errs.push('Name must not contain two spaces');
       if (this.form.distributions.length < 1)
         errs.push('At least 1 distribution is required');
-      if (this.form.distributions.map(x => parseInt(x.percentage)).reduce((a, b) => a + b) != 100)
+      if (this.form.distributions.map(x => parseFloat(x.percentage)).reduce((a, b) => a + b) != 100)
         errs.push('Sum of distributions must be 100');
 
       (this.form.distributions).forEach(dis => {
-        if (!Number.isInteger(dis.percentage))
+        if (!this.isInt(dis.percentage))
           errs.push(dis.percentage + ' is not an integer');
       });
       (errs).forEach(element => {
@@ -157,8 +160,7 @@ export default {
       if (errs.length > 0)
         return false;
       return true;
-    }
-
+    },
   }
 }
 </script>
