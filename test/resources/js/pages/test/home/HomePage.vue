@@ -5,15 +5,9 @@
     </h1>
 
     <div class="col-lg-6 mx-auto zones mb">
-      <zone-editable
-        v-for="zone in zones"
-        :id="zone.id"
-        :name="zone.name"
-        :distributions="zone.distributions"
-        :key="zone.uid"
-        @edit="zone.name = $event.name"
-        class="zone"
-      />
+      <zone-editable v-for="zone in zones" :id="zone.id" :name="zone.name" :updated_at="zone.updated_at"
+        :distributions="zone.distributions" :key="zone.uid" @edit="save($event, zone)" @initLoading="showLoading()"
+        @hideLoading="hideLoading()" class="zone" />
     </div>
 
     <h1 class="display-5 fw-bold text-center">
@@ -21,33 +15,36 @@
     </h1>
 
     <ul class="col-lg-6 mx-auto">
-      <li>Add the percentage symbol to each distribution number while is not being edited</li>
-      <li>The cancel button is not working</li>
-      <li>Without refreshing the page, be able to edit all the distributions from a zone</li>
-      <li>Be able to add more distributions</li>
-      <li>Be able to remove distributions</li>
-      <li>When the user is not able to save due to some error, the error must be showed</li>
-      <li>The sum of all distributions must be ensured to be 100% in anyway</li>
-      <li>The distributions must be integer</li>
-      <li>The zone name cannot be empty</li>
-      <li>The zone name cannot have more than one space between each word</li>
-      <li>The zone name cannot have spaces at start or the end</li>
-      <li>The zone name cannot be repeated in any way</li>
-      <li>Create a new field "updated_at" that is going to store the date when the name field change</li>
-      <li>Show the updated_at field value near each zone name</li>
-      <li>Add a way for the user to know that an element is being saved</li>
-      <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is not being edited</li>
+      <li>Add the percentage symbol to each distribution number while is not being edited DONE</li>
+      <li>The cancel button is not working DONE</li>
+      <li>Without refreshing the page, be able to edit all the distributions from a zone DONE</li>
+      <li>Be able to add more distributions DONE</li>
+      <li>Be able to remove distributions DONE</li>
+      <li>When the user is not able to save due to some error, the error must be showed DONE</li>
+      <li>The sum of all distributions must be ensured to be 100% in anyway DONE</li>
+      <li>The distributions must be integer DONE</li>
+      <li>The zone name cannot be empty DONE</li>
+      <li>The zone name cannot have more than one space between each word DONE</li>
+      <li>The zone name cannot have spaces at start or the end DONE</li>
+      <li>The zone name cannot be repeated in any way DONE</li>
+      <li>Create a new field "updated_at" that is going to store the date when the name field change DONE</li>
+      <li>Show the updated_at field value near each zone name DONE</li>
+      <li>Add a way for the user to know that an element is being saved DONE</li>
+      <li>When the number of distributions is 5 or greater, the background of that zone must change to any color while is
+        not being edited DONE</li>
     </ul>
+    <loading-component v-if="loading"></loading-component>
   </div>
 </template>
 
 <script>
 import ZoneEditable from './ZoneEditable.vue';
-
+import LoadingComponent from '../../../components/Loading.vue';
 export default {
   name: 'HomePage',
   components: {
-    ZoneEditable
+    ZoneEditable,
+    LoadingComponent
   },
   props: {
     context: {
@@ -57,7 +54,8 @@ export default {
   data() {
     return {
       zones: [],
-      zoneUid: 0
+      zoneUid: 0,
+      loading: false,
     };
   },
   mounted() {
@@ -66,9 +64,23 @@ export default {
         id: data.id,
         name: data.name,
         uid: this.zoneUid++,
+        updated_at: data.updated_at,
         distributions: data.distributions
       };
     });
+  },
+  methods: {
+    save($event, zone) {
+      zone.name = $event.name;
+      zone.distributions = $event.distributions;
+      zone.updated_at = $event.updated_at;
+    },
+    showLoading() {
+      this.loading = true;
+    },
+    hideLoading() {
+      this.loading = false;
+    }
   }
 }
 </script>

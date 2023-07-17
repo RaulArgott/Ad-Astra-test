@@ -3,7 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Axios from 'axios';
 import Vue from 'vue';
+import moment from 'moment';
+import VueMoment from 'vue-moment';
 
+require('moment/locale/es');
+
+moment.locale('es');
+
+Vue.use(VueMoment, (moment));
 
 window.axios = Axios;
 
@@ -17,4 +24,10 @@ if (token) {
     console.error('CSRF token not found');
 }
 
+
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+    }
+});
 window.Vue = Vue;

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Distribution(models.Model):
     percentage = models.IntegerField(default=0)
@@ -11,6 +11,6 @@ class Distribution(models.Model):
 
 class Zone(models.Model):
     name = models.CharField(max_length=200)
-
+    updated_at= models.DateTimeField()
     def __str__(self):
         return self.name

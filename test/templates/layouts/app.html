@@ -9,6 +9,7 @@
     <meta name='csrf_token' content="{{ csrf_token }}"/>
     <link rel="stylesheet" href="{% manifest 'app.css' %}">
     <link rel="stylesheet" href="{% manifest 'layout/app.css' %}">
+    <script src="https://kit.fontawesome.com/d00dabc125.js" crossorigin="anonymous"></script>
     {% block styles %}
 
     {% endblock %}
@@ -31,5 +32,6 @@
 
     {% endblock %}
     <script type="text/javascript" src="{% manifest 'layout/app.js' %}"></script>
+    <script src="https://unpkg.com/vue-toastr/dist/vue-toastr.umd.min.js"></script>
   </body>
 </html>
